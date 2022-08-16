@@ -101,7 +101,8 @@ public class ProductEntity {
 	@OneToOne(cascade = CascadeType.PERSIST)
 	MerchantEntity mer;
 	
-	
+	@OneToOne
+	CustomerEntity cus;
 	
 
 }
