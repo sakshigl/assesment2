@@ -2,6 +2,8 @@ package com.globallogic.SuperAdmin.superadmin.controller;
 
 import java.util.List;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +19,6 @@ import com.globallogic.SuperAdmin.superadmin.repo.CategoryRepo;
 import com.globallogic.SuperAdmin.superadmin.repo.MerchantRepo;
 import com.globallogic.SuperAdmin.superadmin.repo.ProductRepo;
 
-
-
-
-
-
 @RestController
 @RequestMapping("/product")
 public class ProdController {
@@ -36,11 +33,29 @@ public class ProdController {
 	MerchantRepo merRepo;
 	
 	//use the GET All the data 
-			@GetMapping("/")
-			public List<ProductEntity> showProduct()
+			@GetMapping("/prodList/{name}")
+			public List<ProductEntity> showProduct(@PathVariable("name") String name)
 			{
 				//return all the value from the tables
-				return repo.findAll();
+				List<ProductEntity> prod=repo.findAll();
+				List<ProductEntity> prodName=prod.stream().filter(e->e.getCat().getName().contentEquals(name)).collect(Collectors.toList());
+				System.out.println(prodName);
+				return prodName;
+				
+				
+			}
+			
+			@GetMapping("/prod/{name}")
+			public List<ProductEntity> showProductByCategoryName(@PathVariable("name") String cName) {
+
+				List<ProductEntity> prod = repo.findAll();
+				System.out.println(prod);
+
+				List<ProductEntity> prodName = prod.stream().filter(e -> (e.getCat().getName()).equalsIgnoreCase(cName))
+						.collect(Collectors.toList());
+
+				System.out.println(prodName);
+				return prodName;
 				
 			}
 			
